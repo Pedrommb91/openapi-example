@@ -35,7 +35,7 @@ func TestBuild(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Build(tt.args.ops...); !reflect.DeepEqual(got, tt.want) {
+			if got := Build(tt.args.ops...); !Equal(got, tt.want) {
 				t.Errorf("Build() = %v, want %v", got, tt.want)
 			}
 		})
@@ -338,7 +338,7 @@ func TestWithKind(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Build(WithKind(tt.args.k)); !reflect.DeepEqual(got, tt.want) {
+			if got := Build(WithKind(tt.args.k)); !Equal(got, tt.want) {
 				t.Errorf("WithKind() = %v, want %v", got, tt.want)
 			}
 		})
