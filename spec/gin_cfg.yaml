@@ -1,0 +1,4 @@
+package: openapi
+generate:
+  gin-server: true
+output: ../internal/api/openapi/openapi_gin.gen.go
