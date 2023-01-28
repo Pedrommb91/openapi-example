@@ -14,6 +14,7 @@ func (*client) GetGenres(c *gin.Context) {
 			Genre string `json:"genre"`
 		}{
 			{Genre: "Rock"},
+			{Genre: "Metal"},
 			{Genre: "Pop"},
 			{Genre: "Hip-pop"},
 			{Genre: "Blues"},

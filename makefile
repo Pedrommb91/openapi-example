@@ -13,3 +13,7 @@ run: ## run command
 .PHONY: generate
 generate: ## generate command
 	go generate ./...
+
+.PHONY: install-dependencies
+install-dependencies: ## install all dependencies
+	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.12.4

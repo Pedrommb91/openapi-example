@@ -18,6 +18,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenreListResponse'
+  /playlist/{id}:
+    get:
+      operationId: getPlaylist
+      tags:
+        - playlist
+      summary: get playlist
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaylistResponse'
+        "204":
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -35,5 +61,59 @@ components:
             properties:
               genre: 
                 type: string
+    
+    PlaylistResponse:
+      required:
+      - id
+      - playlist
+      title: Playlist response
+      type: object
+      properties:
+        id: 
+          type: integer
+        playlist:
+          type: array
+          items:
+            $ref: '#/components/schemas/Music'
+    
+    Music:
+      required:
+      - genre
+      - name
+      - album
+      - artist
+      properties:
+        genre:
+          type: string
+        name:
+          type: string
+        album:
+          type: string
+        artist:
+          type: string
+
+          
+    Error:
+      required:
+        - timestamp
+        - status
+        - error
+        - message
+        - path
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        
 
                 
