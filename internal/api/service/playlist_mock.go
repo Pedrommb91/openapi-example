@@ -8,9 +8,21 @@ import (
 	"github.com/rs/zerolog"
 )
 
+var PlayListsInMemory []PlayList
+
 type PlayList struct {
 	id       int
 	playlist openapi.PlaylistResponse
+}
+
+func NewPlayListInMemoryDatabase() {
+	mockPlaylist := GetMockPlaylists()
+	for i, playlist := range mockPlaylist {
+		PlayListsInMemory = append(PlayListsInMemory, PlayList{
+			id:       i + 1,
+			playlist: playlist,
+		})
+	}
 }
 
 func GetMockPlaylists() []openapi.PlaylistResponse {
@@ -32,7 +44,7 @@ func GetMockPlaylists() []openapi.PlaylistResponse {
 				},
 				{
 					Album:  "The Living Infinite",
-					Artist: "Soilwrk",
+					Artist: "Soilwork",
 					Genre:  "Metal",
 					Name:   "This Momentary Bliss",
 				},
@@ -64,11 +76,11 @@ func GetMockPlaylists() []openapi.PlaylistResponse {
 	}
 }
 
-func GetMockPlayListById(id int) (openapi.PlaylistResponse, error) {
+func GetPlayListById(id int) (openapi.PlaylistResponse, error) {
 	const op = "service.GetMockPlayListById"
-	for _, playlist := range GetMockPlaylists() {
-		if playlist.Id == id {
-			return playlist, nil
+	for _, playlist := range PlayListsInMemory {
+		if playlist.id == id {
+			return playlist.playlist, nil
 		}
 	}
 	return openapi.PlaylistResponse{}, errors.Build(

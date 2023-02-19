@@ -10,7 +10,7 @@ import (
 
 // GetPlaylist implements openapi.ServerInterface
 func (c *client) GetPlaylist(ctx *gin.Context, id int) {
-	playlist, err := GetMockPlayListById(id)
+	playlist, err := GetPlayListById(id)
 	if err != nil {
 		errors.LogError(c.log, err)
 		error_handler.HandleError(ctx, err)
