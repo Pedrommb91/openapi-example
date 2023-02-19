@@ -10,6 +10,8 @@ type client struct {
 }
 
 func NewClient(l logger.Interface) openapi.ServerInterface {
+	NewPlayListInMemoryDatabase()
+
 	return &client{
 		log: l,
 	}
