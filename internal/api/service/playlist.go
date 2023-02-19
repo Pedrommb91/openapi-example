@@ -18,3 +18,8 @@ func (c *client) GetPlaylist(ctx *gin.Context, id int) {
 	}
 	ctx.JSON(http.StatusOK, playlist)
 }
+
+// CreatePlaylist implements openapi.ServerInterface
+func (*client) CreatePlaylist(c *gin.Context, id int) {
+	panic("unimplemented")
+}

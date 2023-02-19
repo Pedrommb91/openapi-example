@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+// CreatePlaylistRequestBody defines model for CreatePlaylistRequestBody.
+type CreatePlaylistRequestBody struct {
+	Playlist []Music `json:"playlist"`
+}
+
 // Error defines model for Error.
 type Error struct {
 	Error     string    `json:"error"`
@@ -36,3 +41,6 @@ type PlaylistResponse struct {
 	Id       int     `json:"id"`
 	Playlist []Music `json:"playlist"`
 }
+
+// CreatePlaylistJSONRequestBody defines body for CreatePlaylist for application/json ContentType.
+type CreatePlaylistJSONRequestBody = CreatePlaylistRequestBody

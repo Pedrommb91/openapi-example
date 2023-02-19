@@ -44,6 +44,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      operationId: createPlaylist
+      tags:
+        - playlist
+      summary: create playlist
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlaylistRequestBody'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaylistResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -71,6 +107,17 @@ components:
       properties:
         id: 
           type: integer
+        playlist:
+          type: array
+          items:
+            $ref: '#/components/schemas/Music'
+    
+    CreatePlaylistRequestBody:
+      required:
+      - playlist
+      title: Playlist response
+      type: object
+      properties:
         playlist:
           type: array
           items:
