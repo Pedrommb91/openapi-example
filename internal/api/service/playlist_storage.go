@@ -13,7 +13,7 @@ var lastId int
 
 type PlayListStorage struct {
 	id       int
-	playlist openapi.PlaylistResponse
+	playlist []openapi.Music
 }
 
 func NewPlayListInMemoryDatabase() {
@@ -21,7 +21,7 @@ func NewPlayListInMemoryDatabase() {
 	for i, playlist := range mockPlaylist {
 		PlayListsInMemory = append(PlayListsInMemory, PlayListStorage{
 			id:       i + 1,
-			playlist: playlist,
+			playlist: playlist.Playlist,
 		})
 		lastId = i + 1
 	}
@@ -82,7 +82,10 @@ func GetPlayListById(id int) (openapi.PlaylistResponse, error) {
 	const op = "service.GetPlayListById"
 	for _, playlist := range PlayListsInMemory {
 		if playlist.id == id {
-			return playlist.playlist, nil
+			return openapi.PlaylistResponse{
+				Id:       playlist.id,
+				Playlist: playlist.playlist,
+			}, nil
 		}
 	}
 	return openapi.PlaylistResponse{}, errors.Build(
