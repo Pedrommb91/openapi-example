@@ -8,9 +8,10 @@ import (
 	"github.com/rs/zerolog"
 )
 
-var PlayListsInMemory []PlayList
+var PlayListsInMemory []PlayListStorage
+var lastId int
 
-type PlayList struct {
+type PlayListStorage struct {
 	id       int
 	playlist openapi.PlaylistResponse
 }
@@ -18,10 +19,11 @@ type PlayList struct {
 func NewPlayListInMemoryDatabase() {
 	mockPlaylist := GetMockPlaylists()
 	for i, playlist := range mockPlaylist {
-		PlayListsInMemory = append(PlayListsInMemory, PlayList{
+		PlayListsInMemory = append(PlayListsInMemory, PlayListStorage{
 			id:       i + 1,
 			playlist: playlist,
 		})
+		lastId = i + 1
 	}
 }
 
@@ -77,14 +79,14 @@ func GetMockPlaylists() []openapi.PlaylistResponse {
 }
 
 func GetPlayListById(id int) (openapi.PlaylistResponse, error) {
-	const op = "service.GetMockPlayListById"
+	const op = "service.GetPlayListById"
 	for _, playlist := range PlayListsInMemory {
 		if playlist.id == id {
 			return playlist.playlist, nil
 		}
 	}
 	return openapi.PlaylistResponse{}, errors.Build(
-		errors.KindNoContent(),
+		errors.KindNotFound(),
 		errors.WithOp(op),
 		errors.WithError(fmt.Errorf("Playlist not found")),
 		errors.WithSeverity(zerolog.WarnLevel),
