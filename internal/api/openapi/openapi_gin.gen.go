@@ -16,12 +16,12 @@ type ServerInterface interface {
 	// get music genres list
 	// (GET /genres)
 	GetGenres(c *gin.Context)
+	// create playlist
+	// (POST /playlist)
+	CreatePlaylist(c *gin.Context)
 	// get playlist
 	// (GET /playlist/{id})
 	GetPlaylist(c *gin.Context, id int)
-	// create playlist
-	// (POST /playlist/{id})
-	CreatePlaylist(c *gin.Context, id int)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -43,6 +43,16 @@ func (siw *ServerInterfaceWrapper) GetGenres(c *gin.Context) {
 	siw.Handler.GetGenres(c)
 }
 
+// CreatePlaylist operation middleware
+func (siw *ServerInterfaceWrapper) CreatePlaylist(c *gin.Context) {
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+	}
+
+	siw.Handler.CreatePlaylist(c)
+}
+
 // GetPlaylist operation middleware
 func (siw *ServerInterfaceWrapper) GetPlaylist(c *gin.Context) {
 
@@ -62,27 +72,6 @@ func (siw *ServerInterfaceWrapper) GetPlaylist(c *gin.Context) {
 	}
 
 	siw.Handler.GetPlaylist(c, id)
-}
-
-// CreatePlaylist operation middleware
-func (siw *ServerInterfaceWrapper) CreatePlaylist(c *gin.Context) {
-
-	var err error
-
-	// ------------- Path parameter "id" -------------
-	var id int
-
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
-	if err != nil {
-		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter id: %s", err), http.StatusBadRequest)
-		return
-	}
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		middleware(c)
-	}
-
-	siw.Handler.CreatePlaylist(c, id)
 }
 
 // GinServerOptions provides options for the Gin server.
@@ -116,9 +105,9 @@ func RegisterHandlersWithOptions(router *gin.Engine, si ServerInterface, options
 
 	router.GET(options.BaseURL+"/genres", wrapper.GetGenres)
 
-	router.GET(options.BaseURL+"/playlist/:id", wrapper.GetPlaylist)
+	router.POST(options.BaseURL+"/playlist", wrapper.CreatePlaylist)
 
-	router.POST(options.BaseURL+"/playlist/:id", wrapper.CreatePlaylist)
+	router.GET(options.BaseURL+"/playlist/:id", wrapper.GetPlaylist)
 
 	return router
 }

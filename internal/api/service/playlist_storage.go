@@ -95,3 +95,12 @@ func GetPlayListById(id int) (openapi.PlaylistResponse, error) {
 		errors.WithSeverity(zerolog.WarnLevel),
 	)
 }
+
+func AddPlayList(playlist openapi.CreatePlaylistRequestBody) int {
+	lastId += 1
+	PlayListsInMemory = append(PlayListsInMemory, PlayListStorage{
+		id:       lastId,
+		playlist: playlist.Playlist,
+	})
+	return lastId
+}
